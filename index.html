@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    :root {
+      --bg: #f4f4f4;
+      --card-bg: #fff;
+      --text: #222;
+      --btn-bg: #28a745;
+      --btn-text: #fff;
+    }
+
+    .dark-mode {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --text: #f4f4f4;
+      --btn-bg: #4caf50;
+      --btn-text: #fff;
+    }
+
+    .container {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(0, 128, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .toggle-dark {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .toggle-dark button {
+      background: #444;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 6px;
+    }
+
+    @media(max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Date Calculator</h2>
+
+    <div class="form-group">
+      <label for="startDate">Start Date</label>
+      <input type="date" id="startDate">
+    </div>
+
+    <div class="form-group">
+      <label for="operation">Operation</label>
+      <select id="operation">
+        <option value="add">Add</option>
+        <option value="subtract">Subtract</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="years">Years</label>
+      <input type="number" id="years" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label for="months">Months</label>
+      <input type="number" id="months" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label for="weeks">Weeks</label>
+      <input type="number" id="weeks" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label for="days">Days</label>
+      <input type="number" id="days" placeholder="0">
+    </div>
+
+    <button onclick="calculateDate()">Calculate New Date</button>
+
+    <div class="result" id="result">Result will appear here...</div>
+
+    <div class="toggle-dark">
+      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </div>
+    <footer style="display: flex; justify-content: center;
+    align-items: center; padding: 20px;">
+      © Enriquez, Neil Ian 2025
+    </footer>
+  </div>
+
+
+  <script>
+    function calculateDate() {
+      const startDate = new Date(document.getElementById('startDate').value);
+      const operation = document.getElementById('operation').value;
+
+      let years = parseInt(document.getElementById('years').value) || 0;
+      let months = parseInt(document.getElementById('months').value) || 0;
+      let weeks = parseInt(document.getElementById('weeks').value) || 0;
+      let days = parseInt(document.getElementById('days').value) || 0;
+
+      if (!startDate.getTime()) {
+        document.getElementById('result').innerHTML = "Please select a valid start date.";
+        return;
+      }
+
+      let newDate = new Date(startDate);
+
+      if (operation === "add") {
+        newDate.setFullYear(newDate.getFullYear() + years);
+        newDate.setMonth(newDate.getMonth() + months);
+        newDate.setDate(newDate.getDate() + (weeks * 7) + days);
+      } else {
+        newDate.setFullYear(newDate.getFullYear() - years);
+        newDate.setMonth(newDate.getMonth() - months);
+        newDate.setDate(newDate.getDate() - (weeks * 7) - days);
+      }
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('result').innerHTML =
+        `Result: ${newDate.toLocaleDateString(undefined, options)}`;
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</body>
+</html>
